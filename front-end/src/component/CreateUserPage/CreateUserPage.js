@@ -56,7 +56,7 @@ export function CreateUserPage() {
                         password: ''
                     });
                     alert('User has been created successfully.');
-                    navigate('/users');
+                    navigate('/');
                 } else {
                     alert('Could not create user.');
                 }
