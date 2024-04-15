@@ -35,4 +35,8 @@ public class DefaultUserService implements UserService {
         return user.orElse(null);
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

@@ -1,39 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
-import TestComponent from "./TestComponent";
-import TestClassComponent from "./TestClassComponent";
-import api from './api/axiosConfig';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import UsersPage from "./component/UsersPage/UsersPage";
+import CreateUserPage from "./component/CreateUserPage/CreateUserPage";
 
 
 function App() {
 
-  const getUsers = async () => {
-    const response = await api.get("/api/v1/users")
-    return response.data;
-  }
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<UsersPage/>}/>
+                <Route path="/user/create" element={<CreateUserPage/>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 
-   console.log(getUsers());
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <TestComponent/>
-        <TestClassComponent/>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
 }
 
 export default App;

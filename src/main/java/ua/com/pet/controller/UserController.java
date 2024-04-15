@@ -1,10 +1,11 @@
 package ua.com.pet.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import ua.com.pet.model.User;
 import ua.com.pet.service.UserService;
 
@@ -13,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
+    private static final String INCOMPLETE = "Incomplete user data";
+    private static final String SAVED = "User saved";
 
     private final UserService userService;
 
@@ -24,28 +28,23 @@ public class UserController {
     @CrossOrigin("http://localhost:3000")
     @GetMapping()
     public List<User> getUsers() {
-        User user = new User();
-        user.setId(1L);
-        user.setName("Nick");
-        user.setEmail("nick@gmail.com");
-        user.setPassword("pass123");
         return userService.getUsers();
     }
 
-    @GetMapping("/save")
-    public List<User> saveUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setName("Nick");
-        user.setEmail("nick@gmail.com");
-        user.setPassword("pass123");
+    @CrossOrigin("http://localhost:3000")
+    @PostMapping("/save")
+    public ResponseEntity<Object> saveUser(@RequestBody User user) {
+        if (user == null || StringUtils.isAnyEmpty(user.getEmail(), user.getName(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(INCOMPLETE);
+        }
         userService.saveUser(user);
-        User user1 = new User();
-        user1.setName("Roman");
-        user1.setEmail("roman@gmail.com");
-        user1.setPassword("12341");
-        userService.saveUser(user1);
-        return userService.getUsers();
+        return ResponseEntity.status(HttpStatus.CREATED).body(SAVED);
+    }
+
+    @CrossOrigin("http://localhost:3000")
+    @GetMapping("/exists/email")
+    public boolean existsByEmail(@RequestParam String email) {
+        return userService.existsByEmail(email);
     }
 
 }

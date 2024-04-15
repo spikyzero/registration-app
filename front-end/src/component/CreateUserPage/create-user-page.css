@@ -1,0 +1,10 @@
+.create-user-page-wrapper {
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+    display: grid;
+}
+
+.create-user-form {
+    width: 300px;
+}
